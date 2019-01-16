@@ -67,7 +67,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
     vec3 color;
     Hit closest = Closest_Intersection(ray);
     vec3 inter = ray.endpoint + (closest.dist * ray.direction);
-    Object * o = closest.object;
+    const Object * o = closest.object;
     
     if (o) {
         color = o->material_shader->Shade_Surface(ray, inter, 
