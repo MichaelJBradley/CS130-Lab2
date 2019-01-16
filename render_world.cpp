@@ -4,6 +4,8 @@
 #include "light.h"
 #include "ray.h"
 
+#include <limits>
+
 extern bool disable_hierarchy;
 
 Render_World::Render_World()
@@ -22,8 +24,19 @@ Render_World::~Render_World()
 // to ensure that hit.dist>=small_t.
 Hit Render_World::Closest_Intersection(const Ray& ray)
 {
-    TODO;
-    return {};
+    double min_t = std::numeric_limits<double>::max();
+    Hit closest;
+
+    for (unsigned i = 0; i < objects.size(); i++) {
+        Hit h = objects[i]->Intersection(ray, -1);
+
+        // If the ray hit an object and it is the closest
+        if ((h.object && h.dist >= small_t) && h.dist < min_t) {
+            closest = h;
+        }
+    }
+
+    return closest;
 }
 
 // set up the initial view ray and call
