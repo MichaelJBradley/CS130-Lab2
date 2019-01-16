@@ -25,7 +25,7 @@ Render_World::~Render_World()
 Hit Render_World::Closest_Intersection(const Ray& ray)
 {
     double min_t = std::numeric_limits<double>::max();
-    Hit closest;
+    Hit closest = {NULL, 0, 0};
 
     for (unsigned i = 0; i < objects.size(); i++) {
         Hit h = objects[i]->Intersection(ray, -1);
@@ -65,7 +65,20 @@ void Render_World::Render()
 vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
 {
     vec3 color;
-    TODO; // determine the color here
+    Hit closest = Closest_Intersection(ray);
+    vec3 inter = ray.endpoint + (closest.dist * ray.direction);
+    Object * o = closest.object;
+    
+    if (o) {
+        color = o->material_shader->Shade_Surface(ray, inter, 
+            o->Normal(inter, -1), recursion_depth_limit);
+
+    } else {
+        // background_shader is a flat shader, so its parameters don't
+        // matter
+        color = background_shader->Shade_Surface(ray, color, color, 0); 
+    }
+
     return color;
 }
 
