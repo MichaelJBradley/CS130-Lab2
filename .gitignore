@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+ray_tracer
+
+# SCons
+.sconsign.dblite
