@@ -1,5 +1,8 @@
 #include "camera.h"
 
+#include "globals.h"
+
+
 Camera::Camera()
     :colors(0)
 {
@@ -42,6 +45,10 @@ void Camera::Set_Resolution(const ivec2& number_pixels_input)
 vec3 Camera::World_Position(const ivec2& pixel_index)
 {
     vec3 result;
-    TODO;
+    vec2 center = Cell_Center(pixel_index);
+
+    result = film_position + (horizontal_vector * center[X])
+                           + (vertical_vector * center[Y]);
+
     return result;
 }
