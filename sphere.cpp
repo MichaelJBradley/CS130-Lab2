@@ -13,9 +13,9 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
     ret.part = -1;
 
     vec3 u = ray.direction;
-    vec3 w = ray.end_point - center;
+    vec3 w = ray.endpoint - center;
     double a = u.magnitude_squared();
-    double b = 2 * (u * w);
+    double b = 2 * dot(u, w);
     double c = w.magnitude_squared() - radius;
     double descrim = (b * b) - (4 * a * c);
 
