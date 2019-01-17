@@ -37,3 +37,6 @@ ray_tracer
 
 # Grading Directory
 grading/
+
+# Output
+output.png
