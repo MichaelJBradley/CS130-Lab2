@@ -44,8 +44,9 @@ void Render_World::Render_Pixel(const ivec2& pixel_index)
 {
     // Calculate the direction vector from camera to the pixel
     vec3 dir = camera.World_Position(pixel_index) - camera.position;
-    // Create the ray from camera with normalized direction vector
-    Ray ray(camera.position, dir.normalized());
+    // Create the ray from camera with direction vector
+    // Ray ctor normalizes the vector for us.
+    Ray ray(camera.position, dir);
     vec3 color=Cast_Ray(ray,1);
     camera.Set_Pixel(pixel_index,Pixel_Color(color));
 }
