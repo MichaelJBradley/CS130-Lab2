@@ -32,6 +32,7 @@ Hit Render_World::Closest_Intersection(const Ray& ray)
 
         // If the ray hit an object and it is the closest
         if ((h.object && h.dist >= small_t) && h.dist < min_t) {
+            min_t = h.dist;
             closest = h;
         }
     }
@@ -67,7 +68,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
 {
     vec3 color;
     Hit closest = Closest_Intersection(ray);
-    vec3 inter = ray.endpoint + (closest.dist * ray.direction);
+    vec3 inter = ray.Point(closest.dist);
     const Object * o = closest.object;
     
     if (o) {
