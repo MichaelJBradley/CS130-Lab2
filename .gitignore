@@ -40,3 +40,6 @@ grading/
 
 # Output
 output.png
+
+# MacOS files
+.DS_Store
