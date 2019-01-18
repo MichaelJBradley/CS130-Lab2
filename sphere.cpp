@@ -25,8 +25,8 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
     }
 
     // Calculated an intersection
-    t1 = (-b + sqrt(descrim)) / 2 * a * c;
-    t2 = (-b - sqrt(descrim)) / 2 * a * c;
+    t1 = (-b + sqrt(descrim)) / 2 * a;
+    t2 = (-b - sqrt(descrim)) / 2 * a;
         
     // Determine which is the closer intersection
     // And whether it beats the threshold
