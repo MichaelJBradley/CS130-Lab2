@@ -34,3 +34,9 @@ ray_tracer
 
 # SCons
 .sconsign.dblite
+
+# Grading Directory
+grading/
+
+# Output
+output.png
