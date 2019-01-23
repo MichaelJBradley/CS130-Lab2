@@ -73,7 +73,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
     
     if (o) {
         color = o->material_shader->Shade_Surface(ray, inter, 
-            o->Normal(inter, -1), recursion_depth_limit);
+            o->Normal(inter, -1), recursion_depth);
 
     } else {
         // background_shader is a flat shader, so its parameters don't
