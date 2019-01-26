@@ -1,3 +1,4 @@
+
 # Prerequisites
 *.d
 
@@ -38,8 +39,8 @@ ray_tracer
 # Grading Directory
 grading/
 
-# Output
-output.png
+# Outputs
+*.png
 
 # MacOS files
 .DS_Store
