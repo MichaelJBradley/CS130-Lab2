@@ -16,10 +16,13 @@ Shade_Surface(const Ray& ray,const vec3& intersection_point,
 
     // Use the world's ambient color and intensity to determine ambient
     // light only once
-    intense_amb = color_ambient * ambient_color[c] * ambient_intensity;
+    intense_amb = (color_ambient * world.ambient_color)
+                    * world.ambient_intensity;
     
-    for (unsigned i = 0; i < lights.size(); i++) { // iterate through lights
-        for (unsigned c = 0; c < color.size(); c++) { // iterate through rgb
+    // iterate through world lights
+    for (unsigned i = 0; i < world.lights.size(); i++) { 
+        // iterate through rgb
+        for (unsigned c = 0; c < 3; c++) { 
         }
     }
 
