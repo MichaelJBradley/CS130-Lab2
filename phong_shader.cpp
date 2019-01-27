@@ -31,7 +31,7 @@ Shade_Surface(const Ray& ray,const vec3& intersection_point,
 
             intense_spec = color_specular
                          * world.lights[i]->Emitted_Light(light_ray)
-                         * std::max(dot(normal, -(ray.direction)), 0.0);
+                         * std::max(dot(r, -(ray.direction)), 0.0);
         }
     }
 
