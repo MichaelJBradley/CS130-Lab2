@@ -23,10 +23,15 @@ Shade_Surface(const Ray& ray,const vec3& intersection_point,
     for (unsigned i = 0; i < world.lights.size(); i++) { 
         vec3 light_ray = world.lights[i]->position - intersection_point;
         // iterate through rgb
-        for (unsigned c = 0; c < 3; c++) { 
+        for (unsigned c = 0; c < 3; c++) {
+            vec3 r = -light_ray + 2 * dot(light_ray, normal) * normal; 
             intense_dif = color_diffuse 
                         * world.lights[i]->Emitted_Light(light_ray)
                         * std::max(dot(normal, light_ray), 0.0);
+
+            intense_spec = color_specular
+                         * world.lights[i]->Emitted_Light(light_ray)
+                         * std::max(dot(normal, -(ray.direction)), 0.0);
         }
     }
 
@@ -34,6 +39,6 @@ Shade_Surface(const Ray& ray,const vec3& intersection_point,
     color = intense_amb + intense_dif + intense_spec;
     return color;
     /**/
-    return intense_dif;
+    return intense_spec;
     /**/
 }
