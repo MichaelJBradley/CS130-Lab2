@@ -139,9 +139,9 @@ bool Mesh::Intersect_Triangle(const Ray& ray, int tri, double& dist) const
     double gamma = dot(cross(u, v), y) / denom;
     double beta = dot(cross(w, u), y) / denom;
     double alpha = 1 - (gamma + beta);
-    
+
     // compare against weight_tol to prevent ray going between triangles
-    if (gamma > -weight_tol && beta && -weight_tol && alpha > -weight_tol) {
+    if (gamma > -weight_tol && beta > -weight_tol && alpha > -weight_tol) {
         dist = hit.dist;
         return true;
     }
