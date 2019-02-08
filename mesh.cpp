@@ -3,6 +3,11 @@
 #include <string>
 #include <limits>
 
+#include "plane.h"
+#include "globals.h"
+
+#include <iostream>
+
 // Consider a triangle to intersect a ray if the ray intersects the plane of the
 // triangle with barycentric weights in [-weight_tolerance, 1+weight_tolerance]
 static const double weight_tolerance = 1e-4;
@@ -42,8 +47,34 @@ void Mesh::Read_Obj(const char* file)
 // Check for an intersection against the ray.  See the base class for details.
 Hit Mesh::Intersection(const Ray& ray, int part) const
 {
-    TODO;
-    return {};
+    Hit ret;
+    ret.object = NULL;
+    ret.dist = 0;
+    ret.part = -1;
+
+    if (part >= 0) {
+        if (Intersect_Triangle(ray, part, ret.dist)) {
+            ret.object = this;
+            ret.part = part;
+        }
+        
+    } else {
+        // naive solution
+        ret.dist = std::numeric_limits<double>::max();
+
+        for (unsigned i = 0; i < triangles.size(); i++) {
+            double temp_dist;
+            if (Intersect_Triangle(ray, i, temp_dist)) {
+                if (temp_dist < ret.dist) {
+                    ret.object = this;
+                    ret.dist = temp_dist;
+                    ret.part = i;
+                }
+            }
+        }        
+    }
+
+    return ret;
 }
 
 // Compute the normal direction for the triangle with index part.
@@ -55,7 +86,7 @@ vec3 Mesh::Normal(const vec3& point, int part) const
     
     // The normal = u x v, where:
     // u is the vector between vertices b (index 1) and a (index 0)
-    vec3 u = vertices[tri[B]] - tvertices[ri[A]];
+    vec3 u = vertices[tri[B]] - vertices[tri[A]];
     // v is the vector between vertices c (index 2) and a (index 0)
     vec3 v = vertices[tri[C]] - vertices[tri[A]];
 
@@ -79,7 +110,7 @@ bool Mesh::Intersect_Triangle(const Ray& ray, int tri, double& dist) const
 {
     // Triangle vertices
     vec3 tri_a = vertices[triangles[tri][A]];
-    vec3 tri_a = vertices[triangles[tri][B]];
+    vec3 tri_b = vertices[triangles[tri][B]];
     vec3 tri_c = vertices[triangles[tri][C]];
     vec3 intersect;
     
@@ -98,15 +129,15 @@ bool Mesh::Intersect_Triangle(const Ray& ray, int tri, double& dist) const
     vec3 y = intersect - tri_a;
     
     // Denominator is the same for each weight calc
-    double denom = cross(u, v) * w;
+    double denom = dot(cross(u, v), w);
     
     if (!denom) {
         return false;
     }
 
     // calc barycentric weights
-    double gamma = (cross(u, v) * y) / denom;
-    double beta = (cross(w, u) * y) / denom;
+    double gamma = dot(cross(u, v), y) / denom;
+    double beta = dot(cross(w, u), y) / denom;
     double alpha = 1 - (gamma + beta);
     
     // compare against weight_tol to prevent ray going between triangles
