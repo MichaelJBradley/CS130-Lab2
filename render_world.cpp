@@ -17,6 +17,7 @@ Render_World::~Render_World()
     delete background_shader;
     for(size_t i=0;i<objects.size();i++) delete objects[i];
     for(size_t i=0;i<lights.size();i++) delete lights[i];
+    if (enable_anti_aliasing) { delete sampler; }
 }
 
 // Find and return the Hit structure for the closest intersection.  Be careful
@@ -45,7 +46,7 @@ void Render_World::Render_Pixel(const ivec2& pixel_index)
     vec3 color;
 
     if (enable_anti_aliasing) {
-        // color = super_sampled_color
+        color = sampler->Sample(pixel_index);
     } else {
         color = Cast_Ray(camera.World_Position(pixel_index));
     }
@@ -56,6 +57,10 @@ void Render_World::Render()
 {
     if(!disable_hierarchy)
         Initialize_Hierarchy();
+
+    if (enable_anti_aliasing) {
+        sampler = new Super_Sample(*this, camera);
+    }
 
     for(int j=0;j<camera.number_pixels[1];j++)
         for(int i=0;i<camera.number_pixels[0];i++)
