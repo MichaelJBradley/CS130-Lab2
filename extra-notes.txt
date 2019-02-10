@@ -1,0 +1,55 @@
+Anti-Aliasing Extra Credit
+
+For the extra credit, I implemented 4 and 16 times super sampling. I created
+a super sampler class and casts 4 or 16 rays for each pixel index. The 
+colors for each ray cast are obtained using the Render_World's Cast_Ray
+function, and the pixel at the specified index is set to their average. 
+
+To avoid aliasing the previous tests an enable_anti_aliasing variable was
+added to the parser. A zero or not including the variable in the txt file
+indicates no anti-aliasing. A 1 indicates 4 times and a 2 indicates 16 times
+super sampling.
+
+extra-1-0.txt:
+    This repeats test 00 with a size of 1920x1808 for comparison with the
+    following tests. No anti-aliasing is done.
+extra-1-1.txt:
+    This repeats extra-0 with 4x super sampling. When viewing the whole
+    image, the circle looks smoother, and zooming in shows the averaged
+    pixel colors.
+extra-1-2.txt:
+    This repeats extra-0 with 16x super sampling. There is little difference
+    when viewing the whole image, but zooming in shows more of a gradient
+    around the edges of the circle.
+
+extra-2-0.txt:
+    This repeats test 12 with a size of 1920x1808 for comparison with the
+    following tests. No anti-aliasing is done.
+extra-2-1.txt:
+    This repeats extra-2-0 with 4x super sampling. In this image it is
+    easiest to see the edge of the blue sphere much smoother against the
+    white sphere in the background.
+extra-2-2.txt:
+    This repeats extra-2-0 with 16x super sampling. In this image the blue
+    sphere looks even smoother against the white sphere in the background.
+
+extra-3-0.txt:
+    This test modifies test 20 to include a reflective plane in the
+    background, adds an extra point light, and changes the size to
+    1920x1080. No anti-aliasing is done.
+extra-3-1.txt:
+    This test repeats extra-3-0 with 4x super sampling. The edges of
+    the spheres are smoother than in extra-3-0. The jittering of the the
+    rays cause slight discoloration of some pixels in the specular
+    highlights.
+extra-3-2.txt:
+    This test repeats estra-3-0 with 16x super sampling. This test takes a
+    while to render because it must cast 16 rays for each of the 2 million 
+    pixels and calculate reflections for the plane. The edges of the
+    spheres are even smoother, and the discoloration on specular highlights     from 4x SS is gone. 
+
+The most difficult part was doing pixel to world coordinate conversions. The
+preexisting functions such as Cell_Center and World_Position abstracted the
+conversions and led to bugs when combining them with new code.
+
+
