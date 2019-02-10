@@ -1,5 +1,12 @@
-# CS130-Lab2
-The first graphics lab that involves programming.
+# CS130 Ray Tracing Project
+A project in which the ray tracing method is used to render objects to the 
+screen.
+
+## Features
+* Phong Shading
+* Reflections
+* Shadows
+* Mesh Rendering
 
 ## Requirements
 SCons is required to build this project.
