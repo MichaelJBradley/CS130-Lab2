@@ -5,4 +5,8 @@
 #define Y 1
 #define Z 2
 
+#define A 0
+#define B 1
+#define C 2
+
 #endif

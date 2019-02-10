@@ -5,7 +5,6 @@ IGNORE2="../CMakeLists.txt"
 OPEN_FLAG="-o"
 CLEAR_FLAG="-c"
 
-
 if [[ "$1" != "" && "$1" != "$OPEN_FLAG" &&  "$1" != "$CLEAR_FLAG" ]]; then
     echo "Invalid flag.\nUsage: ./see_all { -o | -c }"
 
@@ -19,6 +18,7 @@ else
     for i in $( ls ../*.txt ); do
         if [[ "$i" != "$IGNORE1" && "$i" != "$IGNORE2" ]]; then
             .././ray_tracer -i $i
+            echo $i
             cp output.png output-${i:3:2}.png
         fi
     done

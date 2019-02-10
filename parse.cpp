@@ -168,6 +168,11 @@ void Parse(Render_World& world,int& width,int& height,const char* test_file)
             ss>>world.recursion_depth_limit;
             assert(ss);
         }
+        else if(item=="enable_anti_aliasing")
+        {
+            ss>>world.enable_anti_aliasing;
+            assert(ss);
+        }
         else
         {
             std::cout<<"Failed to parse: "<<buff<<std::endl;

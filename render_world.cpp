@@ -1,4 +1,3 @@
-#include "render_world.h"
 #include "flat_shader.h"
 #include "object.h"
 #include "light.h"
@@ -10,7 +9,7 @@ extern bool disable_hierarchy;
 
 Render_World::Render_World()
     :background_shader(0),ambient_intensity(0),enable_shadows(true),
-    recursion_depth_limit(3)
+    recursion_depth_limit(3),enable_anti_aliasing(0)
 {}
 
 Render_World::~Render_World()
@@ -18,6 +17,7 @@ Render_World::~Render_World()
     delete background_shader;
     for(size_t i=0;i<objects.size();i++) delete objects[i];
     for(size_t i=0;i<lights.size();i++) delete lights[i];
+    if (enable_anti_aliasing) { delete sampler; }
 }
 
 // Find and return the Hit structure for the closest intersection.  Be careful
@@ -43,12 +43,13 @@ Hit Render_World::Closest_Intersection(const Ray& ray)
 // set up the initial view ray and call
 void Render_World::Render_Pixel(const ivec2& pixel_index)
 {
-    // Calculate the direction vector from camera to the pixel
-    vec3 dir = camera.World_Position(pixel_index) - camera.position;
-    // Create the ray from camera with direction vector
-    // Ray ctor normalizes the vector for us.
-    Ray ray(camera.position, dir);
-    vec3 color=Cast_Ray(ray,1);
+    vec3 color;
+
+    if (enable_anti_aliasing) {
+        color = sampler->Sample(pixel_index);
+    } else {
+        color = Cast_Ray(camera.World_Position(pixel_index));
+    }
     camera.Set_Pixel(pixel_index,Pixel_Color(color));
 }
 
@@ -56,6 +57,10 @@ void Render_World::Render()
 {
     if(!disable_hierarchy)
         Initialize_Hierarchy();
+
+    if (enable_anti_aliasing) {
+        sampler = new Super_Sample(*this, camera);
+    }
 
     for(int j=0;j<camera.number_pixels[1];j++)
         for(int i=0;i<camera.number_pixels[0];i++)
@@ -73,7 +78,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
     
     if (o) {
         color = o->material_shader->Shade_Surface(ray, inter, 
-            o->Normal(inter, -1), recursion_depth);
+            o->Normal(inter, closest.part), recursion_depth);
 
     } else {
         // background_shader is a flat shader, so its parameters don't
@@ -82,6 +87,17 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
     }
 
     return color;
+}
+
+// Helper function that casts a ray from the specified pixel that has
+// already been converted to world position.
+vec3 Render_World::Cast_Ray(const vec3& pixel_position) {
+    // Calculate the direction vector from camera to the pixel
+    vec3 dir = pixel_position - camera.position;
+    // Create the ray from camera with direction vector
+    // Ray ctor normalizes the vector for us.
+    Ray ray(camera.position, dir);
+    return Cast_Ray(ray, 1);
 }
 
 void Render_World::Initialize_Hierarchy()

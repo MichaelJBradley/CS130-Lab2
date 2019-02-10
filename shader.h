@@ -2,6 +2,8 @@
 #define __SHADER_H__
 
 #include "vec.h"
+#include "render_world.h"
+
 class Render_World;
 class Ray;
 
