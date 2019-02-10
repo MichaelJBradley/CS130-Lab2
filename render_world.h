@@ -26,7 +26,7 @@ public:
     bool enable_shadows;
     int recursion_depth_limit;
 
-    bool enable_anti_aliasing;
+    unsigned enable_anti_aliasing;
     Super_Sample * sampler;
 
     Hierarchy hierarchy;

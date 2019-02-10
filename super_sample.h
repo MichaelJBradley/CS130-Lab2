@@ -10,7 +10,7 @@ class Render_World;
 class Super_Sample
 {
 public:
-    static const unsigned SAMPLES;
+    unsigned samples;
     Camera& camera;
     Render_World& world;
     
@@ -19,6 +19,9 @@ public:
     vec3 Sample(const ivec2& pixel_index);
     void Pixel_Positions(const ivec2& pixel_index, vec3* pixels);
     void Jitter(vec2& pixel_position);
+
+private:
+    void Fill_Pixel_Positions(vec2 * pix_pos, const ivec2& pixel_index);
 };
 
 #endif
