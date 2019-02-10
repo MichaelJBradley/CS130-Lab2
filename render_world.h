@@ -5,10 +5,12 @@
 #include "camera.h"
 #include "hierarchy.h"
 #include "object.h"
+#include "super_sample.h"
 
 class Light;
 class Shader;
 class Ray;
+class Super_Sample;
 
 class Render_World
 {
@@ -24,6 +26,9 @@ public:
     bool enable_shadows;
     int recursion_depth_limit;
 
+    unsigned enable_anti_aliasing;
+    Super_Sample * sampler;
+
     Hierarchy hierarchy;
 
     Render_World();
@@ -34,6 +39,7 @@ public:
     void Initialize_Hierarchy();
 
     vec3 Cast_Ray(const Ray& ray,int recursion_depth);
+    vec3 Cast_Ray(const vec3& pixel_position);
     Hit Closest_Intersection(const Ray& ray);
 };
 #endif
