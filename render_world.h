@@ -35,6 +35,7 @@ public:
     void Initialize_Hierarchy();
 
     vec3 Cast_Ray(const Ray& ray,int recursion_depth);
+    vec3 Cast_Ray(const vec3& pixel_position);
     Hit Closest_Intersection(const Ray& ray);
 };
 #endif
