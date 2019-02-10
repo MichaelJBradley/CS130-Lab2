@@ -23,6 +23,7 @@ public:
 
     bool enable_shadows;
     int recursion_depth_limit;
+    bool enable_anti_aliasing;
 
     Hierarchy hierarchy;
 
